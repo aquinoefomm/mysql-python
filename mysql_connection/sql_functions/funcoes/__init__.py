@@ -1,11 +1,5 @@
 import mysql.connector
-# from mysql_connection import configuracao
-
-configuracao = {
-    'user':'root',
-    'password':'Bl@cK200',
-    'host':'127.0.0.1',
-    'database':'estudo_CC'}
+from mysql_connection import configuracao
 
 def consultar(tabela):
     try:
@@ -51,44 +45,3 @@ def inserir(tabela):
 
 
 
-def atualizar(tabela):
-    id_ = input('Select id to be updated: ')
-    nome = input('Digite o nome: ')
-    carga_horaria = input('Digite a carga horária: ')
-    local = input('Digite a instituição de ensino: ')
-    try:
-        conexao = mysql.connector.connect(**configuracao)
-        cursor = conexao.cursor()
-        atualizar_contato = (f"update {tabela} set nome=%s, carga_horaria=%s, local=%s where id={id_}")
-        contato = (nome, carga_horaria, local)
-        cursor.execute(atualizar_contato, contato)
-        conexao.commit()
-    except mysql.connector.Error as erro:
-        if erro.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
-            print('Usuário ou senha inválidos')
-        elif erro.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
-            print('Banco de dados não existe')
-        else:
-            print(erro)
-    else:
-        cursor.close()
-    conexao.close()
-
-def apagar(tabela):
-    id_ = input('Select id to be deleted: ')
-    try:
-        conexao = mysql.connector.connect(**configuracao)
-        cursor = conexao.cursor()
-        delete_contato = (f'delete from {tabela} where id={id_}')
-        cursor.execute(delete_contato)
-        conexao.commit()
-    except mysql.connector.Error as erro:
-        if erro.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
-            print('Usuário ou senha inválidos')
-        elif erro.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
-            print('Banco de dados não existe')
-        else:
-            print(erro)
-    else:
-        cursor.close()
-    conexao.close()
